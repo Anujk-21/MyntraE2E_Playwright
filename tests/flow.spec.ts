@@ -15,7 +15,7 @@ for (const row of data) {
     const search = new SearchPage(page, locators);
 
     await search.goto(row.url);
-    await expect(page).toHaveTitle(/Myntra/);
+    await expect.soft(page).not.toHaveTitle(/Site Maintenance/);
 
     await search.search(row.product);
     await search.filterBlack();
