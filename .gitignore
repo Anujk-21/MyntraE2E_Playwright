@@ -1,0 +1,7 @@
+target/
+allure-results/
+allure-report/
+.allure/
+bag_page.png
+*.iml
+.idea/
