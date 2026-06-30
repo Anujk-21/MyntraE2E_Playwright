@@ -1,1 +1,1 @@
-[{"uid":"cc64f923954433d6","name":"Flow test - shoes","time":{"start":1782729044683,"stop":1782729059554,"duration":14871},"status":"passed","severity":"normal"}]
+[{"uid":"bdf39e84c63105b6","name":"Flow test","time":{"start":1782798983528,"stop":1782799002489,"duration":18961},"status":"passed","severity":"normal"},{"uid":"a858575b7271510e","name":"Flow test - shoes","time":{"start":1782798421796,"stop":1782798425179,"duration":3383},"status":"failed","severity":"normal"}]

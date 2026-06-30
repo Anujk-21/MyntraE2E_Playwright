@@ -1,30 +1,24 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Page, expect } from '@playwright/test';
 
 export class BagPage {
-  page: Page;
-  qtyDropdown: Locator;
-  modal: Locator;
-  doneBtn: Locator;
-  productName: Locator;
+  constructor(private page: Page) {}
 
-  constructor(page: Page, locators: any) {
-    this.page = page;
+  async changeQuantityToTwo() {
+    await this.page.locator(".itemComponents-base-quantity").click();
 
-    this.qtyDropdown = page.locator(locators.bag.qtyDropdown);
-    this.modal = page.getByRole("dialog");
-    this.doneBtn = page.locator(locators.bag.doneBtn);
-    this.productName = page.locator(locators.bag.productName);
+    const modal = this.page.locator('[role="dialog"]');
+    await modal.waitFor();
+
+    await modal.locator("//div[@class='dialogs-base-qtyList']//div[@id='2']").click();
+    await modal.getByRole('button', { name: 'DONE' }).click();
   }
 
-  async changeQty(qty: number) {
-    await this.qtyDropdown.click();
-    await expect(this.modal).toBeVisible();
-
-    await this.modal.getByText(String(qty)).click();
-    await this.doneBtn.click();
+  async verifyProduct(productName: string) {
+    const bagProductName = await this.page.locator(".itemContainer-base-brand").textContent();
+    expect(bagProductName).toContain(productName);
   }
 
-  async getName() {
-    return await this.productName.textContent();
+  async takeScreenshot() {
+    await this.page.screenshot({ path: 'bag_page.png' });
   }
 }

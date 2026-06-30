@@ -1,37 +1,25 @@
-import { Page, Locator } from "@playwright/test";
+import { Page } from '@playwright/test';
 
 export class SearchPage {
-  page: Page;
-  searchBox: Locator;
-  blackFilter: Locator;
-  firstProduct: Locator;
+  constructor(private page: Page) {}
 
-  constructor(page: Page, locators: any) {
-    this.page = page;
-
-    // assign from excel
-    this.searchBox = page.locator(locators.search.searchBox);
-    this.blackFilter = page.locator(locators.search.blackFilter);
-    this.firstProduct = page.locator(locators.search.firstProduct).first();
+  async navigate() {
+    await this.page.goto('/');
   }
 
-  async goto(url: string) {
-    await this.page.goto(url);
+  async searchProduct(product: string) {
+    await this.page.fill('input[placeholder="Search for products, brands and more"]', product);
+    await this.page.keyboard.press('Enter');
   }
 
-  async search(product: string) {
-    await this.searchBox.fill(product);
-    await this.page.keyboard.press("Enter");
+  async applyBlackFilter() {
+    await this.page.locator("//li[@class='colour-listItem']//span[@data-colorhex='black']").click();
   }
 
-  async filterBlack() {
-    await this.blackFilter.click();
-  }
-
-  async openProduct(): Promise<Page> {
+  async openFirstProduct() {
     const [newPage] = await Promise.all([
-      this.page.context().waitForEvent("page"),
-      this.firstProduct.click(),
+      this.page.context().waitForEvent('page'),
+      this.page.locator('a[href*="buy"]').first().click()
     ]);
     return newPage;
   }

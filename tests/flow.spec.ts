@@ -1,43 +1,34 @@
-import { test, expect } from "@playwright/test";
-import { getLocators } from "../utils/locatorReader";
-import { getTestData } from "../utils/excelReader";
-import { SearchPage } from "../pages/SearchPage";
-import { ProductPage } from "../pages/ProductPage";
-import { BagPage } from "../pages/BagPage";
+import { test, expect } from '@playwright/test';
+import { SearchPage } from '../pages/searchPage';
+import { ProductPage } from '../pages/productPage';
+import { BagPage } from '../pages/bagPage';
 
-const data = getTestData();
-const locators = getLocators();
+test.only('Flow test', async ({ page }) => {
 
-for (const row of data) {
+  const searchPage = new SearchPage(page);
 
-  test(`Flow test - ${row.product}`, async ({ page }) => {
+  await searchPage.navigate();
+  await expect(page).toHaveTitle(/Myntra/);
 
-    const search = new SearchPage(page, locators);
+  await searchPage.searchProduct('shoes');
+  await searchPage.applyBlackFilter();
 
-    await search.goto(row.url);
-    await expect.soft(page).not.toHaveTitle(/Site Maintenance/);
+  const newPage = await searchPage.openFirstProduct();
 
-    await search.search(row.product);
-    await search.filterBlack();
+  const productPage = new ProductPage(newPage);
+  const bagPage = new BagPage(newPage);
 
-    const newPage = await search.openProduct();
+  const productName = await productPage.getProductName();
+  const productPrice = await productPage.getProductPrice();
 
-    const product = new ProductPage(newPage, locators);
+  console.log(`Product Name: ${productName}`);
+  console.log(`Product Price: ${productPrice}`);
 
-    const details = await product.details();
+  await productPage.selectSize();
+  await productPage.addToBag();
+  await productPage.goToBag();
 
-    await product.selectSize();
-    await product.addToCart();
-
-    const bag = new BagPage(newPage, locators);
-
-    await bag.changeQty(row.quantity);
-
-    const name = await bag.getName();
-    expect(name).toContain(details.name);
-
-    await newPage.screenshot({ path: "Final.png" });
-
-  });
-
-}
+  await bagPage.changeQuantityToTwo();
+  await bagPage.verifyProduct(productName!);
+  await bagPage.takeScreenshot();
+});
