@@ -1,6 +1,6 @@
 # 🛍️ Myntra E-Commerce Automation (Playwright PoC)
 
-Hi there! 👋 Welcome to my Playwright automation project. 
+
 
 This repository is a **Proof of Concept (PoC)** that automates a complete end-to-end shopping journey on Myntra. Instead of just testing a single button or page, this script acts exactly like a real user—searching for shoes, filtering by color, picking a size, updating the cart, and making sure everything is correct.
 
@@ -9,7 +9,7 @@ This repository is a **Proof of Concept (PoC)** that automates a complete end-to
 * **Environment:** Node.js
 * **Design Pattern:** Page Object Model (POM)
 
-### 🤔 Why Page Object Model (POM)?
+### Why Page Object Model (POM)?
 To keep the code clean and easy to maintain, I used the POM design pattern. Instead of writing one giant, messy script, I separated the code into specific "pages":
 * `SearchPage` 🕵️‍♂️ - Handles searching, applying filters, and navigating.
 * `ProductPage` 👟 - Captures product details and adds items to the bag.
@@ -30,7 +30,7 @@ When you run this test, here is exactly what happens on the screen:
 7. **Checking Out:** It navigates to the shopping bag.
 8. **Updating Quantity:** Need more than one? The script opens the quantity modal, changes it to 2, and saves it.
 9. **Validation (The most important part!):** It checks the cart to guarantee that the exact shoe we clicked on earlier is the one sitting in the bag.
-10. **Say Cheese 📸:** Finally, it takes a screenshot (`bag_page.png`) of the cart as proof that the test passed!
+10. **Screenshot:** Finally, it takes a screenshot (`bag_page.png`) of the cart as proof that the test passed!
 
 ---
 
